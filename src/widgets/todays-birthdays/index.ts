@@ -1,0 +1,1 @@
+export { TodaysBirthdays } from './TodaysBirthdays';
