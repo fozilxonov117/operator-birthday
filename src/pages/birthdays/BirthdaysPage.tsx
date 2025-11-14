@@ -115,7 +115,7 @@ export const BirthdaysPage = () => {
 
         {/* Birthday List */}
         <Box sx={{ flex: 1, overflow: 'hidden' }}>
-          <BirthdayList employees={monthBirthdays} selectedMonth={selectedMonth} />
+          <BirthdayList employees={monthBirthdays} selectedMonth={selectedMonth} seasonConfig={seasonConfig} />
         </Box>
       </Box>
       </Box>

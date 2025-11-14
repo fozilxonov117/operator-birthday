@@ -1,9 +1,7 @@
-import { Card, CardContent, Typography, Box, Chip } from '@mui/material';
+import { Card, CardContent, Typography, Box } from '@mui/material';
 import { motion } from 'framer-motion';
 import type { Employee } from '../../../shared/types';
 import { getRandomGreeting } from '../../../shared/constants';
-import StarIcon from '@mui/icons-material/Star';
-import EmojiEventsIcon from '@mui/icons-material/EmojiEvents';
 import { ReactionList } from '../../../features/reactions';
 import type { SeasonConfig } from '../../../shared/constants/seasons';
 
@@ -67,49 +65,13 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
               left: '50%',
               transform: 'translateX(-50%)',
               width: '100%',
-              maxWidth: '65%',
+              maxWidth: '80%',
               height: 'auto',
               minHeight: '100%',
               objectFit: 'cover',
               objectPosition: 'center top',
             }}
           />
-          {/* Leadership Badge */}
-          {employee.isLeader && (
-            <Chip
-              icon={<StarIcon />}
-              label="Leadership"
-              sx={{
-                position: 'absolute',
-                top: 10,
-                left: 10,
-                backgroundColor: '#FFD700',
-                color: '#FFF',
-                fontWeight: 'bold',
-                fontSize: '0.7rem',
-                boxShadow: 2,
-              }}
-            />
-          )}
-          {employee.isLeader && (
-            <Box
-              sx={{
-                position: 'absolute',
-                top: 10,
-                right: 10,
-                backgroundColor: '#FFD700',
-                borderRadius: '50%',
-                width: 32,
-                height: 32,
-                display: 'flex',
-                alignItems: 'center',
-                justifyContent: 'center',
-                boxShadow: 2,
-              }}
-            >
-              <EmojiEventsIcon sx={{ color: '#000', fontSize: 20 }} />
-            </Box>
-          )}
         </Box>
 
         <CardContent sx={{ p: 2, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -132,6 +94,11 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
             {employee.name}
           </Typography>
 
+          {/* Reactions */}
+          <Box mb={1}>
+            <ReactionList employeeId={employee.id} seasonConfig={seasonConfig} />
+          </Box>
+
           {/* Greeting Message */}
           <Box
             sx={{
@@ -141,9 +108,13 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
               borderRadius: 2,
               padding: 1.5,
               textAlign: 'center',
-              mb: 1,
+              height: '85px',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
               border: `1px solid ${employee.isLeader ? 'rgba(255, 215, 0, 0.3)' : seasonalColor + '30'}`,
               backdropFilter: 'blur(10px)',
+              overflow: 'hidden',
             }}
           >
             <Typography
@@ -153,14 +124,16 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
                 color: employee.isLeader ? '#8B6914' : seasonalColor,
                 lineHeight: 1.4,
                 fontWeight: 500,
+                display: '-webkit-box',
+                WebkitLineClamp: 3,
+                WebkitBoxOrient: 'vertical',
+                overflow: 'hidden',
+                textOverflow: 'ellipsis',
               }}
             >
               "{greeting}"
             </Typography>
           </Box>
-
-          {/* Reactions */}
-          <ReactionList employeeId={employee.id} seasonConfig={seasonConfig} />
         </CardContent>
       </Card>
     </motion.div>

@@ -93,7 +93,7 @@ export const TodaysBirthdays = ({ employees, seasonConfig }: TodaysBirthdaysProp
               sx={{
                 height: '100%',
                 background: seasonConfig.colors.gradient,
-                backdropFilter: 'blur(20px)',
+                backdropFilter: 'blur(10px)',
                 overflowY: 'auto',
                 borderRadius: 0,
                 borderLeft: `2px solid ${seasonConfig.colors.primary}`,

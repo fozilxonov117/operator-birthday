@@ -7,12 +7,15 @@ import { MONTHS } from '../../shared/constants';
 import CelebrationIcon from '@mui/icons-material/Celebration';
 import CakeIcon from '@mui/icons-material/Cake';
 
+import type { SeasonConfig } from '../../shared/constants/seasons';
+
 interface BirthdayListProps {
   employees: Employee[];
   selectedMonth: number;
+  seasonConfig?: SeasonConfig;
 }
 
-export const BirthdayList = ({ employees, selectedMonth }: BirthdayListProps) => {
+export const BirthdayList = ({ employees, selectedMonth, seasonConfig }: BirthdayListProps) => {
   const sortedEmployees = sortEmployees(employees);
   const monthName = MONTHS.find((m) => m.id === selectedMonth)?.name || '';
 
@@ -23,8 +26,8 @@ export const BirthdayList = ({ employees, selectedMonth }: BirthdayListProps) =>
         height: '100%',
         display: 'flex',
         flexDirection: 'column',
-        background: 'rgba(255, 255, 255, 0.5)',
-        backdropFilter: 'blur(20px)',
+        background: 'rgba(255, 255, 255, 0.43)',
+        backdropFilter: 'blur(1px)',
         borderRadius: 3,
         border: '1px solid rgba(255, 255, 255, 0.3)',
       }}
@@ -98,7 +101,7 @@ export const BirthdayList = ({ employees, selectedMonth }: BirthdayListProps) =>
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
-                  <EmployeeCard employee={employee} />
+                  <EmployeeCard employee={employee} seasonConfig={seasonConfig} />
                 </motion.div>
               ))}
             </AnimatePresence>

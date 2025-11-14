@@ -42,18 +42,18 @@ export const SEASON_CONFIG: Record<Season, SeasonConfig> = {
     name: 'spring',
     months: [3, 4, 5], // March, April, May
     colors: {
-      primary: '#ec407a',
-      secondary: '#f48fb1',
-      accent: '#f8bbd0',
-      gradient: 'linear-gradient(135deg, rgba(236, 64, 121, 0.36) 0%, rgba(244, 143, 177, 0.85) 100%)',
+      primary: '#0d9668ff',
+      secondary: '#0d9668ff',
+      accent: 'rgba(16, 185, 129, 0.1)',
+      gradient: 'linear-gradient(135deg, rgb(114 236 64 / 2%) 0%, rgb(143 244 160 / 25%) 100%)',
     },
     background: {
-      overlay: 'rgba(236, 64, 122, 0.1)',
-      imageUrl: 'bg-images/spring-img.webp',
+      overlay: 'rgba(16, 185, 129, 0.1)',
+      imageUrl: 'https://static.wikia.nocookie.net/c1002065-cf63-450b-9d94-4d51a3173dcc',
     },
     monthCardColors: {
       unselected: 'rgba(255, 255, 255, 0.5)',
-      selected: 'linear-gradient(135deg, #ec407a57 0%, #f48fb1c9 100%)',
+      selected: 'linear-gradient(135deg, #10b98157 0%, #34d399c9 100%)',
     },
   },
   summer: {
@@ -67,7 +67,7 @@ export const SEASON_CONFIG: Record<Season, SeasonConfig> = {
     },
     background: {
       overlay: 'rgba(255, 167, 38, 0.1)',
-      imageUrl: 'bg-images/summer-img.webp',
+      imageUrl: 'https://i.pinimg.com/originals/8e/43/05/8e4305e5ca2524e022a75c5fdf0f1803.jpg',
     },
     monthCardColors: {
       unselected: 'rgba(255, 255, 255, 0.5)',

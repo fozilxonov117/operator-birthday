@@ -21,6 +21,7 @@ export const ReactionList = ({ employeeId, seasonConfig }: ReactionListProps) =>
   const [stats, setStats] = useState<ReactionStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [submitting, setSubmitting] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
   const deviceId = getDeviceId();
 
   const reactions: ReactionType[] = ['like', 'love', 'celebrate', 'clap', 'fire'];
@@ -83,34 +84,90 @@ export const ReactionList = ({ employeeId, seasonConfig }: ReactionListProps) =>
     return null;
   }
 
+  // Determine which icon to show by default
+  const defaultReaction = stats.userReaction || (stats.totalReactions > 0 
+    ? reactions.find(r => stats.reactions[r] > 0) 
+    : 'like');
+
   return (
     <Box
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
       sx={{
+        position: 'relative',
         display: 'flex',
         justifyContent: 'center',
         alignItems: 'center',
-        gap: 0.75,
-        py: 0.75,
-        px: 1,
-        background: `linear-gradient(135deg, ${bgColor}40, ${bgColor}20)`,
-        borderRadius: 2.5,
-        border: `1.5px solid ${borderColor}30`,
-        mt: 'auto',
-        backdropFilter: 'blur(10px)',
-        boxShadow: `0 2px 8px ${borderColor}20`,
+        minHeight: '44px',
+        height: '44px',
       }}
     >
-      {reactions.map((reactionType) => (
-        <ReactionButton
-          key={reactionType}
-          reactionType={reactionType}
-          count={stats.reactions[reactionType]}
-          isSelected={stats.userReaction === reactionType}
-          onClick={() => handleReactionClick(reactionType)}
-          disabled={submitting}
-          seasonConfig={seasonConfig}
-        />
-      ))}
+      {/* Default visible icon */}
+      {!isHovered && defaultReaction && (
+        <Box
+          sx={{
+            transition: 'all 0.3s ease',
+          }}
+        >
+          <ReactionButton
+            reactionType={defaultReaction}
+            count={stats.totalReactions}
+            isSelected={stats.userReaction === defaultReaction}
+            onClick={() => handleReactionClick(defaultReaction)}
+            disabled={submitting}
+            seasonConfig={seasonConfig}
+          />
+        </Box>
+      )}
+
+      {/* Expanded reactions on hover */}
+      {isHovered && (
+        <Box
+          sx={{
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center',
+            gap: 0.5,
+            py: 0.5,
+            px: 0.75,
+            background: `linear-gradient(135deg, ${bgColor}35, ${bgColor}15)`,
+            borderRadius: 3,
+            border: `1px solid ${borderColor}25`,
+            // backdropFilter: 'blur(10px)',
+            boxShadow: `0 4px 12px ${borderColor}25`,
+          }}
+        >
+          {reactions.map((reactionType, index) => (
+            <Box
+              key={reactionType}
+              sx={{
+                opacity: 0,
+                transform: 'scale(0.5) translateY(10px)',
+                animation: `fadeInUp 0.3s ease forwards ${index * 0.05}s`,
+                '@keyframes fadeInUp': {
+                  '0%': {
+                    opacity: 0,
+                    transform: 'scale(0.5) translateY(10px)',
+                  },
+                  '100%': {
+                    opacity: 1,
+                    transform: 'scale(1) translateY(0)',
+                  },
+                },
+              }}
+            >
+              <ReactionButton
+                reactionType={reactionType}
+                count={stats.reactions[reactionType]}
+                isSelected={stats.userReaction === reactionType}
+                onClick={() => handleReactionClick(reactionType)}
+                disabled={submitting}
+                seasonConfig={seasonConfig}
+              />
+            </Box>
+          ))}
+        </Box>
+      )}
     </Box>
   );
 };

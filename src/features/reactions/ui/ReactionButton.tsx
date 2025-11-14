@@ -58,22 +58,22 @@ export const ReactionButton = ({
                 ? `linear-gradient(135deg, ${reactionColor}30, ${reactionColor}50)` 
                 : `linear-gradient(135deg, ${seasonalAccent}60, rgba(255, 255, 255, 0.95))`,
               border: isSelected 
-                ? `2.5px solid ${reactionColor}` 
-                : `2px solid ${seasonalAccent}80`,
+                ? `2px solid ${reactionColor}` 
+                : `1.5px solid ${seasonalAccent}80`,
               transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              padding: '10px',
+              padding: '6px',
               boxShadow: isSelected 
-                ? `0 4px 12px ${reactionColor}40, 0 0 0 4px ${reactionColor}10` 
-                : `0 2px 6px ${seasonalAccent}30`,
+                ? `0 2px 8px ${reactionColor}40, 0 0 0 3px ${reactionColor}10` 
+                : `0 1px 4px ${seasonalAccent}30`,
               '&:hover': {
                 background: `linear-gradient(135deg, ${reactionColor}40, ${reactionColor}60)`,
                 borderColor: reactionColor,
-                boxShadow: `0 6px 16px ${reactionColor}50, 0 0 0 4px ${reactionColor}15`,
-                transform: 'translateY(-2px)',
+                boxShadow: `0 4px 10px ${reactionColor}50, 0 0 0 3px ${reactionColor}15`,
+                transform: 'translateY(-1px)',
               },
               '&:active': {
                 transform: 'translateY(0px)',
-                boxShadow: `0 2px 8px ${reactionColor}40`,
+                boxShadow: `0 1px 6px ${reactionColor}40`,
               },
               '&:disabled': {
                 opacity: 0.6,
@@ -84,7 +84,7 @@ export const ReactionButton = ({
           >
             <Icon
               sx={{
-                fontSize: 20,
+                fontSize: 16,
                 color: reactionColor,
                 transition: 'all 0.3s ease',
                 filter: isSelected ? 'none' : 'saturate(0.7)',
@@ -101,15 +101,15 @@ export const ReactionButton = ({
               <Typography
                 variant="caption"
                 sx={{
-                  fontSize: '0.7rem',
+                  fontSize: '0.65rem',
                   fontWeight: 'bold',
                   color: reactionColor,
-                  minWidth: '18px',
+                  minWidth: '16px',
                   textAlign: 'center',
                   background: `linear-gradient(135deg, ${reactionColor}20, ${reactionColor}10)`,
-                  borderRadius: '10px',
-                  px: 0.5,
-                  py: 0.1,
+                  borderRadius: '8px',
+                  px: 0.4,
+                  py: 0.05,
                   border: `1px solid ${reactionColor}30`,
                 }}
               >

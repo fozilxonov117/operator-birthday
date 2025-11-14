@@ -124,7 +124,7 @@ export const MonthFilter = ({ selectedMonth, onMonthSelect, birthdayCounts }: Mo
                   background: isSelected
                     ? seasonConfig.monthCardColors.selected
                     : seasonConfig.monthCardColors.unselected,
-                  backdropFilter: 'blur(10px)',
+                  backdropFilter: 'blur(1px)',
                   border: isSelected ? `2px solid ${seasonConfig.colors.primary}` : '2px solid rgba(255, 255, 255, 0.5)',
                   boxShadow: isSelected ? `0 8px 32px ${seasonConfig.colors.primary}40` : '0 4px 16px rgba(0, 0, 0, 0.1)',
                   transition: 'all 0.3s ease',
