@@ -18,77 +18,56 @@ export const ReactionButton = ({
   isSelected,
   onClick,
   disabled = false,
-  seasonConfig,
 }: ReactionButtonProps) => {
   const config = REACTION_CONFIG[reactionType];
-  const Icon = config.icon;
-  
-  // Modern vibrant colors for reactions
-  const modernColors: Record<ReactionType, string> = {
-    like: '#3b82f6', // Bright blue
-    love: '#ef4444', // Vibrant red
-    celebrate: '#f59e0b', // Golden amber
-    clap: '#10b981', // Fresh green
-    fire: '#f97316', // Orange fire
-  };
-  
-  const reactionColor = modernColors[reactionType];
-  const seasonalAccent = seasonConfig?.colors.accent || '#e3f2fd';
 
   return (
     <Tooltip title={config.label} arrow>
       <motion.div
-        whileHover={{ scale: disabled ? 1 : 1.15, rotate: disabled ? 0 : [0, -5, 5, 0] }}
-        whileTap={{ scale: disabled ? 1 : 0.9 }}
-        transition={{ duration: 0.2 }}
+        whileHover={{ scale: disabled ? 1 : 1.2 }}
+        whileTap={{ scale: disabled ? 1 : 0.85 }}
+        transition={{ type: 'spring', stiffness: 400, damping: 15 }}
       >
         <Box
           sx={{
             display: 'flex',
-            flexDirection: 'column',
+            flexDirection: 'row',
             alignItems: 'center',
-            gap: 0.25,
+            gap: 0.5,
           }}
         >
           <IconButton
             onClick={onClick}
             disabled={disabled}
             sx={{
-              background: isSelected 
-                ? `linear-gradient(135deg, ${reactionColor}30, ${reactionColor}50)` 
-                : `linear-gradient(135deg, ${seasonalAccent}60, rgba(255, 255, 255, 0.95))`,
-              border: isSelected 
-                ? `2px solid ${reactionColor}` 
-                : `1.5px solid ${seasonalAccent}80`,
-              transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
-              padding: '6px',
-              boxShadow: isSelected 
-                ? `0 2px 8px ${reactionColor}40, 0 0 0 3px ${reactionColor}10` 
-                : `0 1px 4px ${seasonalAccent}30`,
+              background: 'transparent',
+              border: 'none',
+              transition: 'all 0.2s ease',
+              padding: '4px',
               '&:hover': {
-                background: `linear-gradient(135deg, ${reactionColor}40, ${reactionColor}60)`,
-                borderColor: reactionColor,
-                boxShadow: `0 4px 10px ${reactionColor}50, 0 0 0 3px ${reactionColor}15`,
-                transform: 'translateY(-1px)',
+                background: 'transparent',
+                transform: 'scale(1.1)',
               },
               '&:active': {
-                transform: 'translateY(0px)',
-                boxShadow: `0 1px 6px ${reactionColor}40`,
+                transform: 'scale(0.9)',
               },
               '&:disabled': {
                 opacity: 0.6,
-                background: 'rgba(200, 200, 200, 0.3)',
               },
             }}
             size="small"
           >
-            <Icon
+            <Box
+              component="img"
+              src={config.emojiUrl}
+              alt={config.label}
               sx={{
-                fontSize: 16,
-                color: reactionColor,
-                transition: 'all 0.3s ease',
-                filter: isSelected ? 'none' : 'saturate(0.7)',
-                transform: isSelected ? 'scale(1.1)' : 'scale(1)',
+                width: '20px',
+                height: '20px',
+                transition: 'all 0.2s ease',
+                filter: isSelected ? 'drop-shadow(0 2px 4px rgba(0,0,0,0.3))' : 'none',
+                transform: isSelected ? 'scale(1.15)' : 'scale(1)',
+                display: 'block',
               }}
             />
           </IconButton>
@@ -101,16 +80,12 @@ export const ReactionButton = ({
               <Typography
                 variant="caption"
                 sx={{
-                  fontSize: '0.65rem',
+                  fontSize: '0.75rem',
                   fontWeight: 'bold',
-                  color: reactionColor,
+                  color: '#fff',
+                  textShadow: '0 1px 3px rgba(0,0,0,0.5)',
                   minWidth: '16px',
                   textAlign: 'center',
-                  background: `linear-gradient(135deg, ${reactionColor}20, ${reactionColor}10)`,
-                  borderRadius: '8px',
-                  px: 0.4,
-                  py: 0.05,
-                  border: `1px solid ${reactionColor}30`,
                 }}
               >
                 {count}

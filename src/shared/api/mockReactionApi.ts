@@ -39,13 +39,13 @@ export const getReactionStats = async (
   const allReactions = getStoredReactions();
   const employeeReactions = allReactions.filter((r) => r.employeeId === employeeId);
 
-  // Count reactions by type
+  // Count reactions by type with base counts of 10+
   const reactions: ReactionStats['reactions'] = {
-    like: 0,
-    love: 0,
-    celebrate: 0,
-    clap: 0,
-    fire: 0,
+    like: 12,
+    love: 15,
+    celebrate: 18,
+    clap: 14,
+    fire: 20,
   };
 
   let userReaction: ReactionType | undefined;
@@ -60,7 +60,7 @@ export const getReactionStats = async (
   return {
     employeeId,
     reactions,
-    totalReactions: employeeReactions.length,
+    totalReactions: Object.values(reactions).reduce((sum, count) => sum + count, 0),
     userReaction,
   };
 };

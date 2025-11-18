@@ -28,14 +28,15 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
       <Card
         sx={{
           position: 'relative',
-          overflow: 'visible',
+          overflow: 'hidden',
+          borderRadius: 1,
           border: employee.isLeader ? '2px solid #FFD700' : 'none',
           background: 'rgba(255, 255, 255, 0.7)',
           backdropFilter: 'blur(10px)',
           boxShadow: employee.isLeader
             ? '0 4px 16px rgba(255, 215, 0, 0.3)'
             : `0 4px 16px ${seasonConfig?.background.overlay || 'rgba(33, 150, 243, 0.2)'}`,
-          minHeight: '420px',
+          minHeight: '410px',
           display: 'flex',
           flexDirection: 'column',
           '&:hover': {
@@ -45,33 +46,82 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
           },
         }}
       >
-        {/* Image Cover */}
+        {/* Image Cover with Telegram-style extended background */}
         <Box
           sx={{
             width: '100%',
-            height: '200px',
+            height: '230px',
             position: 'relative',
             overflow: 'hidden',
             flexShrink: 0,
           }}
         >
+          {/* Extended blurred background - repeats bottom part of image */}
+          <Box
+            component="img"
+            src={employee.photo}
+            alt=""
+            sx={{
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              width: '100%',
+              height: '100%',
+              objectFit: 'cover',
+              objectPosition: 'center bottom',
+              filter: 'blur(25px) brightness(0.85)',
+              transform: 'scale(1.15)',
+            }}
+          />
+          
+          {/* Main image */}
           <Box
             component="img"
             src={employee.photo}
             alt={employee.name}
             sx={{
               position: 'absolute',
-              top: '-25px',
+              top: 0,
               left: '50%',
               transform: 'translateX(-50%)',
               width: '100%',
-              maxWidth: '80%',
+              maxWidth: '75%',
               height: 'auto',
               minHeight: '100%',
               objectFit: 'cover',
               objectPosition: 'center top',
+              zIndex: 1,
             }}
           />
+          
+          {/* Gradient overlay for smooth blending at bottom edge */}
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: '40%',
+              background: 'linear-gradient(to bottom, transparent 0%, rgba(255, 255, 255, 0.4) 70%, rgba(255, 255, 255, 0.8) 100%)',
+              zIndex: 2,
+              pointerEvents: 'none',
+            }}
+          />
+          
+          {/* Reactions positioned inside image */}
+          <Box
+            sx={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 3,
+              display: 'flex',
+              justifyContent: 'flex-start',
+            }}
+          >
+            <ReactionList employeeId={employee.id} seasonConfig={seasonConfig} />
+          </Box>
         </Box>
 
         <CardContent sx={{ p: 2, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
@@ -93,11 +143,6 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
           >
             {employee.name}
           </Typography>
-
-          {/* Reactions */}
-          <Box mb={1}>
-            <ReactionList employeeId={employee.id} seasonConfig={seasonConfig} />
-          </Box>
 
           {/* Greeting Message */}
           <Box

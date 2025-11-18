@@ -25,10 +25,6 @@ export const ReactionList = ({ employeeId, seasonConfig }: ReactionListProps) =>
   const deviceId = getDeviceId();
 
   const reactions: ReactionType[] = ['like', 'love', 'celebrate', 'clap', 'fire'];
-  
-  // Use season colors or fallback to default
-  const bgColor = seasonConfig?.colors.accent || '#bbdefb';
-  const borderColor = seasonConfig?.colors.primary || '#2196f3';
 
   useEffect(() => {
     loadReactionStats();
@@ -125,16 +121,7 @@ export const ReactionList = ({ employeeId, seasonConfig }: ReactionListProps) =>
         <Box
           sx={{
             display: 'flex',
-            justifyContent: 'center',
-            alignItems: 'center',
-            gap: 0.5,
-            py: 0.5,
-            px: 0.75,
-            background: `linear-gradient(135deg, ${bgColor}35, ${bgColor}15)`,
-            borderRadius: 3,
-            border: `1px solid ${borderColor}25`,
-            // backdropFilter: 'blur(10px)',
-            boxShadow: `0 4px 12px ${borderColor}25`,
+            gap: 1,
           }}
         >
           {reactions.map((reactionType, index) => (

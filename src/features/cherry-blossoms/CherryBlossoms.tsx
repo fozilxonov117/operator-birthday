@@ -31,7 +31,7 @@ export const CherryBlossoms = () => {
 
     // Create petals
     const petals: Petal[] = [];
-    const petalCount = 40;
+    const petalCount = 80;
 
     for (let i = 0; i < petalCount; i++) {
       petals.push({

@@ -1,9 +1,3 @@
-import ThumbUpIcon from '@mui/icons-material/ThumbUp';
-import FavoriteIcon from '@mui/icons-material/Favorite';
-import CelebrationIcon from '@mui/icons-material/Celebration';
-import EmojiEmotionsIcon from '@mui/icons-material/EmojiEmotions';
-import LocalFireDepartmentIcon from '@mui/icons-material/LocalFireDepartment';
-
 export type ReactionType = 'like' | 'love' | 'celebrate' | 'clap' | 'fire';
 
 export interface ReactionStats {
@@ -15,32 +9,33 @@ export interface ReactionStats {
   userReaction?: ReactionType;
 }
 
+// Apple emoji CDN URLs for high-quality rendering
 export const REACTION_CONFIG: Record<
   ReactionType,
-  { icon: typeof ThumbUpIcon; label: string; color: string }
+  { emojiUrl: string; label: string; color: string }
 > = {
   like: {
-    icon: ThumbUpIcon,
+    emojiUrl: 'https://em-content.zobj.net/source/apple/391/high-voltage_26a1.png',
     label: 'Like',
     color: '#2196f3',
   },
   love: {
-    icon: FavoriteIcon,
+    emojiUrl: 'https://em-content.zobj.net/source/apple/391/red-heart_2764-fe0f.png',
     label: 'Love',
     color: '#f44336',
   },
   celebrate: {
-    icon: CelebrationIcon,
+    emojiUrl: 'https://em-content.zobj.net/source/apple/391/party-popper_1f389.png',
     label: 'Celebrate',
     color: '#ff9800',
   },
   clap: {
-    icon: EmojiEmotionsIcon,
+    emojiUrl: 'https://em-content.zobj.net/source/apple/391/clapping-hands_1f44f.png',
     label: 'Clap',
     color: '#4caf50',
   },
   fire: {
-    icon: LocalFireDepartmentIcon,
+    emojiUrl: 'https://em-content.zobj.net/source/apple/391/fire_1f525.png',
     label: 'Fire',
     color: '#ff5722',
   },
