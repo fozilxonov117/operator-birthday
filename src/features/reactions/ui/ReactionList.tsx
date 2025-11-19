@@ -80,10 +80,24 @@ export const ReactionList = ({ employeeId, seasonConfig }: ReactionListProps) =>
     return null;
   }
 
-  // Determine which icon to show by default
-  const defaultReaction = stats.userReaction || (stats.totalReactions > 0 
-    ? reactions.find(r => stats.reactions[r] > 0) 
-    : 'like');
+  // Determine which icon to show by default - prioritize user's reaction or the most collected one
+  const getMostCollectedReaction = (): ReactionType => {
+    if (stats.userReaction) return stats.userReaction;
+    
+    let maxCount = 0;
+    let mostCollected: ReactionType = 'like';
+    
+    reactions.forEach((reactionType) => {
+      if (stats.reactions[reactionType] > maxCount) {
+        maxCount = stats.reactions[reactionType];
+        mostCollected = reactionType;
+      }
+    });
+    
+    return mostCollected;
+  };
+
+  const defaultReaction = getMostCollectedReaction();
 
   return (
     <Box
@@ -107,7 +121,7 @@ export const ReactionList = ({ employeeId, seasonConfig }: ReactionListProps) =>
         >
           <ReactionButton
             reactionType={defaultReaction}
-            count={stats.totalReactions}
+            count={stats.reactions[defaultReaction]}
             isSelected={stats.userReaction === defaultReaction}
             onClick={() => handleReactionClick(defaultReaction)}
             disabled={submitting}
