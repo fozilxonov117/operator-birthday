@@ -19,8 +19,8 @@ export const TodaysBirthdays = ({ employees, seasonConfig }: TodaysBirthdaysProp
   const sortedEmployees = sortEmployees(employees);
   
   // Dynamic width based on employee count with min/max constraints
-  const sidebarWidth = employees.length <= 3 ? '24%' : '40%';
-  const minWidth = '320px';
+  const sidebarWidth = employees.length <= 3 ? '20%' : '90%';
+  const minWidth = '380px';
   const maxWidth = '700px';
   const gridColumns = employees.length <= 3 ? 1 : 2;
 

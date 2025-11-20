@@ -36,7 +36,7 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
           boxShadow: employee.isLeader
             ? '0 4px 16px rgba(255, 215, 0, 0.3)'
             : `0 4px 16px ${seasonConfig?.background.overlay || 'rgba(33, 150, 243, 0.2)'}`,
-          minHeight: '410px',
+            minHeight: '382px',
           display: 'flex',
           flexDirection: 'column',
           '&:hover': {
@@ -85,7 +85,7 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
               left: '50%',
               transform: 'translateX(-50%)',
               width: '100%',
-              maxWidth: '75%',
+              maxWidth: '85%',
               height: 'auto',
               minHeight: '100%',
               objectFit: 'cover',
@@ -124,14 +124,13 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
           </Box>
         </Box>
 
-        <CardContent sx={{ p: 2, flex: 1, display: 'flex', flexDirection: 'column', justifyContent: 'space-between' }}>
+        <CardContent sx={{ p: 1.5, pt: 1, pb: 1.5, display: 'flex', flexDirection: 'column', gap: 1 }}>
           {/* Name */}
           <Typography
             variant="h6"
             component="div"
             fontWeight="bold"
             textAlign="center"
-            mb={1}
             sx={{
               background: employee.isLeader
                 ? 'linear-gradient(45deg, #DAA520 30%, #FFD700 90%)'
@@ -151,9 +150,9 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
                 ? 'linear-gradient(135deg, rgba(255, 215, 0, 0.15), rgba(255, 215, 0, 0.05))' 
                 : `linear-gradient(135deg, ${seasonalColor}25, ${seasonalAccent}15)`,
               borderRadius: 2,
-              padding: 1.5,
+              padding: 1,
               textAlign: 'center',
-              height: '85px',
+              minHeight: '70px',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
