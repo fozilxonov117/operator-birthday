@@ -85,7 +85,7 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
               left: '50%',
               transform: 'translateX(-50%)',
               width: '100%',
-              maxWidth: '85%',
+              maxWidth: '80%',
               height: 'auto',
               minHeight: '100%',
               objectFit: 'cover',

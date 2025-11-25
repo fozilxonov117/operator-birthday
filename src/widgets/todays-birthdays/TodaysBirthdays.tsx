@@ -45,19 +45,19 @@ export const TodaysBirthdays = ({ employees, seasonConfig }: TodaysBirthdaysProp
             exit={{ opacity: 0, x: 100 }}
             style={{
               position: 'fixed',
-              top: 80,
-              right: 20,
+              top: 10,
+              right: 14,
               zIndex: 2000,
             }}
           >
             <Fab
-              color="secondary"
               onClick={() => setIsOpen(true)}
               sx={{
-                background: `linear-gradient(135deg, ${seasonConfig.colors.primary} 0%, ${seasonConfig.colors.secondary} 100%)`,
-                boxShadow: `0 4px 20px ${seasonConfig.background.overlay}`,
+                background: '#ffffff6c',
+                color: '#0f0f0fff',
+                boxShadow: '0 4px 20px rgba(0, 0, 0, 0.15)',
                 '&:hover': {
-                  background: `linear-gradient(135deg, ${seasonConfig.colors.primary} 0%, ${seasonConfig.colors.accent} 100%)`,
+                  background: '#f5f5f5',
                 },
               }}
             >
@@ -79,7 +79,6 @@ export const TodaysBirthdays = ({ employees, seasonConfig }: TodaysBirthdaysProp
             transition={{ type: 'spring', damping: 25, stiffness: 200 }}
             style={{
               position: 'fixed',
-              top: '64px',
               right: 0,
               height: '100vh',
               width: sidebarWidth,
@@ -92,11 +91,10 @@ export const TodaysBirthdays = ({ employees, seasonConfig }: TodaysBirthdaysProp
               elevation={8}
               sx={{
                 height: '100%',
-                background: seasonConfig.colors.gradient,
+                background: '#ffffff21',
                 backdropFilter: 'blur(10px)',
                 overflowY: 'auto',
                 borderRadius: 0,
-                borderLeft: `2px solid ${seasonConfig.colors.primary}`,
                 position: 'relative',
                 transition: 'all 0.5s ease',
                 // Hide scrollbar
@@ -115,10 +113,10 @@ export const TodaysBirthdays = ({ employees, seasonConfig }: TodaysBirthdaysProp
                   top: 18,
                   right: 8,
                   zIndex: 10,
-                  background: seasonConfig.colors.primary,
+                  background: 'rgba(0, 0, 0, 0.6)',
                   color: 'white',
                   '&:hover': {
-                    background: seasonConfig.colors.secondary,
+                    background: 'rgba(0, 0, 0, 0.8)',
                   },
                 }}
               >

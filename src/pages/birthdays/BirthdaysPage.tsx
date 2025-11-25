@@ -1,6 +1,5 @@
 import { useState, useMemo } from 'react';
 import { Box } from '@mui/material';
-import { Navigation } from '../../widgets/navigation';
 import { MonthFilter } from '../../widgets/month-filter';
 import { BirthdayList } from '../../widgets/birthday-list';
 import { TodaysBirthdays } from '../../widgets/todays-birthdays';
@@ -55,12 +54,9 @@ export const BirthdaysPage = () => {
 
   return (
     <>
-      {/* Navigation with dynamic season colors */}
-      <Navigation seasonConfig={seasonConfig} />
-      
       <Box
         sx={{
-          height: 'calc(100vh - 64px)',
+          height: '100vh',
           width: '100vw',
           overflow: 'hidden',
           background: seasonConfig.colors.gradient,
