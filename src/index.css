@@ -44,3 +44,6 @@ body {
 .css-1qstjwj-MuiCardContent-root:last-child{
   padding: 16px !important;
 }
+.css-fvqm5c:last-child{
+  padding: 0 !important;
+}
