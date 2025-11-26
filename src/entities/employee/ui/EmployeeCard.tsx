@@ -49,7 +49,13 @@ export const EmployeeCard = ({ employee, onClick, seasonConfig, isExpanded = fal
         }}
         onClick={onClick}
       >
-        <CardContent sx={{ p: isExpanded? 0 : 2, transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)' }}>
+        <CardContent 
+          sx={{ 
+            p: isExpanded ? 0 : 2, 
+            transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
+            
+          }}
+        >
           <Box display="flex" alignItems="center" gap={2.5}>
             {/* Image */}
             <Box

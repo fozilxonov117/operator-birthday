@@ -37,6 +37,12 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #4c63d2;
 }
+
+/* Remove default MUI CardContent bottom padding */
+.MuiCardContent-root:last-child {
+  padding-bottom: 16px !important;
+}
+
 .css-h1wvgk-MuiCardContent-root:last-child{
   padding: 0 !important;
 }
