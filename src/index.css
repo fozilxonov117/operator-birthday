@@ -37,4 +37,10 @@ body {
 ::-webkit-scrollbar-thumb:hover {
   background: #4c63d2;
 }
+.css-h1wvgk-MuiCardContent-root:last-child{
+  padding: 0 !important;
+}
 
+.css-1qstjwj-MuiCardContent-root:last-child{
+  padding: 16px !important;
+}

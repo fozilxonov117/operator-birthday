@@ -1,5 +1,6 @@
 import { Box, Typography, Paper } from '@mui/material'; 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
+import { useState } from 'react';
 import type { Employee } from '../../shared/types';
 import { EmployeeCard } from '../../entities/employee';
 import { sortEmployees } from '../../shared/lib';
@@ -18,6 +19,21 @@ interface BirthdayListProps {
 export const BirthdayList = ({ employees, selectedMonth, seasonConfig }: BirthdayListProps) => {
   const sortedEmployees = sortEmployees(employees);
   const monthName = MONTHS.find((m) => m.id === selectedMonth)?.name || '';
+  const [expandedCardId, setExpandedCardId] = useState<string | null>(null);
+
+  const handleCardClick = (employeeId: string) => {
+    setExpandedCardId(expandedCardId === employeeId ? null : employeeId);
+  };
+
+  // Distribute employees into columns for proper left-to-right, top-to-bottom ordering
+  const distributeIntoColumns = (employees: Employee[], columnCount: number) => {
+    const columns: Employee[][] = Array.from({ length: columnCount }, () => []);
+    employees.forEach((employee, index) => {
+      const columnIndex = index % columnCount;
+      columns[columnIndex].push(employee);
+    });
+    return columns;
+  };
 
   return (
     <Paper
@@ -80,20 +96,103 @@ export const BirthdayList = ({ employees, selectedMonth, seasonConfig }: Birthda
             </Typography>
           </Box>
         ) : (
-          <Box
-            sx={{
-              display: 'grid',
-              paddingTop: 0.75,
-              gridTemplateColumns: {
-                xs: '1fr',
-                sm: 'repeat(2, 1fr)',
-                md: 'repeat(3, 1fr)',
-                lg: 'repeat(4, 1fr)',
-              },
-              gap: 2,
-            }}
-          >
-            <AnimatePresence>
+          <>
+            {/* Desktop/Tablet: 4 columns */}
+            <Box
+              sx={{
+                display: { xs: 'none', lg: 'flex' },
+                gap: 2,
+                paddingTop: 0.75,
+              }}
+            >
+              {distributeIntoColumns(sortedEmployees, 4).map((columnEmployees, colIndex) => (
+                <Box key={colIndex} sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  {columnEmployees.map((employee, index) => (
+                    <motion.div
+                      key={employee.id}
+                      initial={{ opacity: 0, x: -50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: (colIndex * columnEmployees.length + index) * 0.05 }}
+                    >
+                      <EmployeeCard
+                        employee={employee}
+                        seasonConfig={seasonConfig}
+                        isExpanded={expandedCardId === employee.id}
+                        onClick={() => handleCardClick(employee.id)}
+                      />
+                    </motion.div>
+                  ))}
+                </Box>
+              ))}
+            </Box>
+
+            {/* Medium: 3 columns */}
+            <Box
+              sx={{
+                display: { xs: 'none', md: 'flex', lg: 'none' },
+                gap: 2,
+                paddingTop: 0.75,
+              }}
+            >
+              {distributeIntoColumns(sortedEmployees, 3).map((columnEmployees, colIndex) => (
+                <Box key={colIndex} sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  {columnEmployees.map((employee, index) => (
+                    <motion.div
+                      key={employee.id}
+                      initial={{ opacity: 0, x: -50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: (colIndex * columnEmployees.length + index) * 0.05 }}
+                    >
+                      <EmployeeCard
+                        employee={employee}
+                        seasonConfig={seasonConfig}
+                        isExpanded={expandedCardId === employee.id}
+                        onClick={() => handleCardClick(employee.id)}
+                      />
+                    </motion.div>
+                  ))}
+                </Box>
+              ))}
+            </Box>
+
+            {/* Small: 2 columns */}
+            <Box
+              sx={{
+                display: { xs: 'none', sm: 'flex', md: 'none' },
+                gap: 2,
+                paddingTop: 0.75,
+              }}
+            >
+              {distributeIntoColumns(sortedEmployees, 2).map((columnEmployees, colIndex) => (
+                <Box key={colIndex} sx={{ flex: 1, display: 'flex', flexDirection: 'column', gap: 2 }}>
+                  {columnEmployees.map((employee, index) => (
+                    <motion.div
+                      key={employee.id}
+                      initial={{ opacity: 0, x: -50 }}
+                      animate={{ opacity: 1, x: 0 }}
+                      transition={{ duration: 0.3, delay: (colIndex * columnEmployees.length + index) * 0.05 }}
+                    >
+                      <EmployeeCard
+                        employee={employee}
+                        seasonConfig={seasonConfig}
+                        isExpanded={expandedCardId === employee.id}
+                        onClick={() => handleCardClick(employee.id)}
+                      />
+                    </motion.div>
+                  ))}
+                </Box>
+              ))}
+            </Box>
+
+            {/* Extra Small: 1 column */}
+            <Box
+              sx={{
+                display: { xs: 'flex', sm: 'none' },
+                flexDirection: 'column',
+                gap: 2,
+                paddingTop: 0.75,
+              }}
+            >
               {sortedEmployees.map((employee, index) => (
                 <motion.div
                   key={employee.id}
@@ -101,11 +200,16 @@ export const BirthdayList = ({ employees, selectedMonth, seasonConfig }: Birthda
                   animate={{ opacity: 1, x: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
                 >
-                  <EmployeeCard employee={employee} seasonConfig={seasonConfig} />
+                  <EmployeeCard
+                    employee={employee}
+                    seasonConfig={seasonConfig}
+                    isExpanded={expandedCardId === employee.id}
+                    onClick={() => handleCardClick(employee.id)}
+                  />
                 </motion.div>
               ))}
-            </AnimatePresence>
-          </Box>
+            </Box>
+          </>
         )}
       </Box>
     </Paper>

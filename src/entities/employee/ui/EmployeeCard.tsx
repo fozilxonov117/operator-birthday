@@ -9,24 +9,28 @@ interface EmployeeCardProps {
   employee: Employee;
   onClick?: () => void;
   seasonConfig?: SeasonConfig;
+  isExpanded?: boolean;
 }
 
-export const EmployeeCard = ({ employee, onClick, seasonConfig }: EmployeeCardProps) => {
+export const EmployeeCard = ({ employee, onClick, seasonConfig, isExpanded = false }: EmployeeCardProps) => {
   const seasonalColor = seasonConfig?.colors.primary || '#2196f3';
   const seasonalSecondary = seasonConfig?.colors.secondary || '#64b5f6';
   const seasonalAccent = seasonConfig?.colors.accent || '#bbdefb';
   return (
     <motion.div
-      whileHover={{ scale: 1.02, y: -4 }}
+      whileHover={{ scale: 1.02, y: 0 }}
       whileTap={{ scale: 0.98 }}
       transition={{ type: 'spring', stiffness: 400, damping: 20 }}
+      animate={{
+        height: isExpanded ? 'auto' : 'auto',
+      }}
     >
       <Card
         sx={{
           cursor: onClick ? 'pointer' : 'default',
           border: employee.isLeader 
             ? `2px solid ${seasonalColor}` 
-            : `1px solid ${seasonalAccent}50`,
+            : `2px solid ${seasonalAccent}50`,
           background: employee.isLeader
             ? `linear-gradient(135deg, ${seasonalAccent}30, rgba(255, 255, 255, 0.9))`
             : 'rgba(255, 255, 255, 0.85)',
@@ -41,21 +45,20 @@ export const EmployeeCard = ({ employee, onClick, seasonConfig }: EmployeeCardPr
             boxShadow: employee.isLeader
               ? `0 8px 28px ${seasonalColor}40, 0 0 0 2px ${seasonalColor}20`
               : `0 6px 20px ${seasonalColor}30`,
-            transform: 'translateY(-2px)',
           },
         }}
         onClick={onClick}
       >
-        <CardContent sx={{ p: 2.5, pt: employee.isLeader ? 3 : 2.5 }}>
+        <CardContent sx={{ p: isExpanded? 0 : 2, transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)' }}>
           <Box display="flex" alignItems="center" gap={2.5}>
             {/* Image */}
             <Box
               sx={{
-                width: '90px',
-                height: '90px',
+                width: isExpanded ? '180px' : '90px',
+                height: isExpanded ? '180px' : '90px',
                 position: 'relative',
                 flexShrink: 0,
-                borderRadius: 3,
+                borderRadius: isExpanded ? 1 : 3,
                 overflow: 'hidden',
                 border: employee.isLeader 
                   ? `3px solid ${seasonalColor}40`
@@ -63,6 +66,7 @@ export const EmployeeCard = ({ employee, onClick, seasonConfig }: EmployeeCardPr
                 boxShadow: employee.isLeader
                   ? `0 4px 12px ${seasonalColor}30`
                   : `0 2px 8px ${seasonalAccent}25`,
+                transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
               }}
             >
               <Box

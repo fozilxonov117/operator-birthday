@@ -45,11 +45,7 @@ export const getTodaysBirthdays = (employees: Employee[]): Employee[] => {
  */
 export const sortEmployees = (employees: Employee[]): Employee[] => {
   return [...employees].sort((a, b) => {
-    // Leaders first
-    if (a.isLeader && !b.isLeader) return -1;
-    if (!a.isLeader && b.isLeader) return 1;
-    
-    // Then by birthday
+    // Sort only by birthday date
     return a.birthday.localeCompare(b.birthday);
   });
 };
