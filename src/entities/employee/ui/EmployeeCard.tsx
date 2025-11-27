@@ -1,9 +1,10 @@
 import { Card, CardContent, Typography, Box } from '@mui/material';
 import { motion } from 'framer-motion';
 import type { Employee } from '../../../shared/types';
-import { formatBirthday } from '../../../shared/lib';
+import { formatBirthday, getDaysUntilBirthday, getBirthdayProgress } from '../../../shared/lib';
 import CakeIcon from '@mui/icons-material/Cake';
 import type { SeasonConfig } from '../../../shared/constants/seasons';
+import { ProgressBar } from '../../../features/birthday-countdown';
 
 interface EmployeeCardProps {
   employee: Employee;
@@ -16,6 +17,11 @@ export const EmployeeCard = ({ employee, onClick, seasonConfig, isExpanded = fal
   const seasonalColor = seasonConfig?.colors.primary || '#2196f3';
   const seasonalSecondary = seasonConfig?.colors.secondary || '#64b5f6';
   const seasonalAccent = seasonConfig?.colors.accent || '#bbdefb';
+  
+  // Calculate countdown data
+  const daysUntil = getDaysUntilBirthday(employee.birthday);
+  const progress = getBirthdayProgress(employee.birthday);
+  
   return (
     <motion.div
       whileHover={{ scale: 1.02, y: 0 }}
@@ -135,6 +141,15 @@ export const EmployeeCard = ({ employee, onClick, seasonConfig, isExpanded = fal
                 >
                   {formatBirthday(employee.birthday)}
                 </Typography>
+              </Box>
+              
+              {/* Birthday Countdown Progress */}
+              <Box mt={1.5}>
+                <ProgressBar 
+                  daysUntil={daysUntil} 
+                  progress={progress} 
+                  color={seasonalColor} 
+                />
               </Box>
             </Box>
           </Box>

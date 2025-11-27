@@ -62,7 +62,7 @@ export const BirthdayList = ({ employees, selectedMonth, seasonConfig }: Birthda
               WebkitTextFillColor: 'transparent',
             }}
           >
-            {monthName} Birthdays
+            {monthName} Birthdays 
           </Typography>
         </Box>
         <Typography variant="body2" color="text.secondary">

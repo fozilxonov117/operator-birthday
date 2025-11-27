@@ -7,4 +7,6 @@ export {
   sortEmployees,
   calculateAge,
   formatBirthday,
+  getDaysUntilBirthday,
+  getBirthdayProgress,
 } from './date-utils';

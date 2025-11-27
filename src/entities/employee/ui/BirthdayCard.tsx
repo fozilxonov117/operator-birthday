@@ -3,6 +3,7 @@ import { motion } from 'framer-motion';
 import type { Employee } from '../../../shared/types';
 import { getRandomGreeting } from '../../../shared/constants';
 import { ReactionList } from '../../../features/reactions';
+import { ImageCarousel } from '../../../features/image-carousel';
 import type { SeasonConfig } from '../../../shared/constants/seasons';
 
 interface BirthdayCardProps {
@@ -17,6 +18,11 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
   const seasonalColor = seasonConfig?.colors.primary || '#2196f3';
   const seasonalSecondary = seasonConfig?.colors.secondary || '#64b5f6';
   const seasonalAccent = seasonConfig?.colors.accent || '#bbdefb';
+
+  // Get images array for carousel - use photos array if available, fallback to single photo
+  const images = employee.photos && employee.photos.length > 0 
+    ? employee.photos 
+    : [employee.photo];
 
   return (
     <motion.div
@@ -59,7 +65,7 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
           {/* Extended blurred background - repeats bottom part of image */}
           <Box
             component="img"
-            src={employee.photo}
+            src={images[0]}
             alt=""
             sx={{
               position: 'absolute',
@@ -71,28 +77,14 @@ export const BirthdayCard = ({ employee, seasonConfig }: BirthdayCardProps) => {
               objectPosition: 'center bottom',
               filter: 'blur(25px) brightness(0.85)',
               transform: 'scale(1.15)',
+              zIndex: 0,
             }}
           />
           
-          {/* Main image */}
-          <Box
-            component="img"
-            src={employee.photo}
-            alt={employee.name}
-            sx={{
-              position: 'absolute',
-              top: 0,
-              left: '50%',
-              transform: 'translateX(-50%)',
-              width: '100%',
-              maxWidth: '80%',
-              height: 'auto',
-              minHeight: '100%',
-              objectFit: 'cover',
-              objectPosition: 'center top',
-              zIndex: 1,
-            }}
-          />
+          {/* Carousel for multiple images */}
+          <Box sx={{ position: 'absolute', top: 0, left: 0, width: '100%', height: '100%', zIndex: 1 }}>
+            <ImageCarousel images={images} altText={employee.name} />
+          </Box>
           
           {/* Gradient overlay for smooth blending at bottom edge */}
           <Box
