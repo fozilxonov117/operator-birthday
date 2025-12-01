@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Box, IconButton } from '@mui/material';
 import { motion, AnimatePresence } from 'framer-motion';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
@@ -7,27 +7,14 @@ import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 interface ImageCarouselProps {
   images: string[];
   altText: string;
-  autoPlayInterval?: number;
 }
 
 export const ImageCarousel = ({ 
   images, 
-  altText, 
-  autoPlayInterval = 5000 
+  altText
 }: ImageCarouselProps) => {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
-
-  // Remove auto-play functionality - manual control only
-  // useEffect(() => {
-  //   if (images.length <= 1) return;
-
-  //   const timer = setInterval(() => {
-  //     handleNext();
-  //   }, autoPlayInterval);
-
-  //   return () => clearInterval(timer);
-  // }, [currentIndex, images.length, autoPlayInterval]);
 
   const handleNext = () => {
     setDirection(1);
