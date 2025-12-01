@@ -108,8 +108,6 @@ export const MOCK_EMPLOYEES: Employee[] = [
     photos: [
       'operators/Sodiqov-Fazliddin.jpg',
       'https://i.pravatar.cc/300?img=51',
-      'https://i.pravatar.cc/300?img=68',
-      'https://i.pravatar.cc/300?img=69',
     ],
     birthday: '12-01',  
     department: 'Product',
