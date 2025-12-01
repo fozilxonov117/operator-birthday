@@ -2,7 +2,7 @@ import { Box, Typography, Card, CardContent, IconButton } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import { MONTHS } from '../../shared/constants';
-import { getSeasonConfig } from '../../shared/constants/seasons';
+import { getSeasonConfig, getCurrentSeason, isMonthInCurrentSeason, SEASON_CONFIG } from '../../shared/constants/seasons';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CakeIcon from '@mui/icons-material/Cake';
@@ -15,18 +15,40 @@ interface MonthFilterProps {
 
 export const MonthFilter = ({ selectedMonth, onMonthSelect, birthdayCounts }: MonthFilterProps) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
+  const currentSeason = getCurrentSeason();
+  const currentSeasonMonths = SEASON_CONFIG[currentSeason].months;
+
+  // Reorder months so current season is in the CENTER of the carousel
+  // For winter (Dec=12, Jan=1, Feb=2), order becomes: Jun, Jul, Aug, Sep, Oct, Nov, Dec, Jan, Feb, Mar, Apr, May
+  const reorderedMonths = (() => {
+    const allMonthIds = MONTHS.map(m => m.id);
+    
+    // Separate current season months from others
+    const otherMonths = allMonthIds.filter(id => !currentSeasonMonths.includes(id));
+    
+    // Split other months in half to place season in the middle
+    const halfPoint = Math.floor(otherMonths.length / 2);
+    const firstHalf = otherMonths.slice(0, halfPoint);
+    const secondHalf = otherMonths.slice(halfPoint);
+    
+    // Arrange: [first half] + [current season] + [second half]
+    const reordered = [...firstHalf, ...currentSeasonMonths, ...secondHalf];
+    
+    return MONTHS.filter(m => reordered.includes(m.id))
+      .sort((a, b) => reordered.indexOf(a.id) - reordered.indexOf(b.id));
+  })();
 
   const handleArrowClick = (direction: 'left' | 'right') => {
-    const currentIndex = MONTHS.findIndex(m => m.id === selectedMonth);
+    const currentIndex = currentSeasonMonths.findIndex(m => m === selectedMonth);
     let newIndex;
     
     if (direction === 'left') {
-      newIndex = currentIndex === 0 ? MONTHS.length - 1 : currentIndex - 1;
+      newIndex = currentIndex === 0 ? currentSeasonMonths.length - 1 : currentIndex - 1;
     } else {
-      newIndex = currentIndex === MONTHS.length - 1 ? 0 : currentIndex + 1;
+      newIndex = currentIndex === currentSeasonMonths.length - 1 ? 0 : currentIndex + 1;
     }
     
-    onMonthSelect(MONTHS[newIndex].id);
+    onMonthSelect(currentSeasonMonths[newIndex]);
   };
 
   // Handle mouse wheel scroll with passive: false
@@ -102,25 +124,26 @@ export const MonthFilter = ({ selectedMonth, onMonthSelect, birthdayCounts }: Mo
           py: 1,
         }}
       >
-        {MONTHS.map((month) => {
+        {reorderedMonths.map((month) => {
           const count = birthdayCounts[month.id] || 0;
           const isSelected = selectedMonth === month.id;
           const currentYear = new Date().getFullYear();
           const seasonConfig = getSeasonConfig(month.id);
+          const isInCurrentSeason = isMonthInCurrentSeason(month.id);
 
           return (
             <motion.div
               key={month.id}
               data-month={month.id}
-              whileHover={{ scale: 1.05, y: -1 }}
-              whileTap={{ scale: 1 }}
+              whileHover={isInCurrentSeason ? { scale: 1.05, y: -1 } : {}}
+              whileTap={isInCurrentSeason ? { scale: 1 } : {}}
               transition={{ type: 'spring', stiffness: 300 }}
             >
               <Card
-                onClick={() => onMonthSelect(month.id)}
+                onClick={() => isInCurrentSeason && onMonthSelect(month.id)}
                 sx={{
                   minWidth: 200,
-                  cursor: 'pointer',
+                  cursor: isInCurrentSeason ? 'pointer' : 'not-allowed',
                   background: isSelected
                     ? seasonConfig.monthCardColors.selected
                     : seasonConfig.monthCardColors.unselected,
@@ -128,10 +151,13 @@ export const MonthFilter = ({ selectedMonth, onMonthSelect, birthdayCounts }: Mo
                   border: isSelected ? `2px solid ${seasonConfig.colors.primary}` : '2px solid rgba(255, 255, 255, 0.5)',
                   boxShadow: isSelected ? `0 8px 32px ${seasonConfig.colors.primary}40` : '0 4px 16px rgba(0, 0, 0, 0.1)',
                   transition: 'all 0.3s ease',
-                  '&:hover': {
+                  opacity: isInCurrentSeason ? 1 : 0.4,
+                  filter: isInCurrentSeason ? 'none' : 'grayscale(50%)',
+                  pointerEvents: isInCurrentSeason ? 'auto' : 'none',
+                  '&:hover': isInCurrentSeason ? {
                     boxShadow: `0 12px 40px ${seasonConfig.colors.primary}50`,
                     border: `2px solid ${seasonConfig.colors.primary}`,
-                  },
+                  } : {},
                 }}
               >
                 <CardContent sx={{ textAlign: 'center', py: 3 }}>

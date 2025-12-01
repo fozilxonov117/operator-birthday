@@ -113,3 +113,19 @@ export const getSeasonConfig = (month: number): SeasonConfig => {
   const season = getSeasonByMonth(month);
   return SEASON_CONFIG[season];
 };
+
+/**
+ * Get current season based on today's date
+ */
+export const getCurrentSeason = (): Season => {
+  const currentMonth = new Date().getMonth() + 1; // 1-12
+  return getSeasonByMonth(currentMonth);
+};
+
+/**
+ * Check if a month is in the current season
+ */
+export const isMonthInCurrentSeason = (month: number): boolean => {
+  const currentSeason = getCurrentSeason();
+  return SEASON_CONFIG[currentSeason].months.includes(month);
+};
