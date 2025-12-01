@@ -143,14 +143,16 @@ export const EmployeeCard = ({ employee, onClick, seasonConfig, isExpanded = fal
                 </Typography>
               </Box>
               
-              {/* Birthday Countdown Progress */}
-              <Box mt={1.5}>
-                <ProgressBar 
-                  daysUntil={daysUntil} 
-                  progress={progress} 
-                  color={seasonalColor} 
-                />
-              </Box>
+              {/* Birthday Countdown Progress - Only show when expanded */}
+              {isExpanded && (
+                <Box mt={1.5} >
+                  <ProgressBar 
+                    daysUntil={daysUntil} 
+                    progress={progress} 
+                    color={seasonalColor} 
+                  />
+                </Box>
+              )}
             </Box>
           </Box>
         </CardContent>

@@ -18,16 +18,16 @@ export const ImageCarousel = ({
   const [currentIndex, setCurrentIndex] = useState(0);
   const [direction, setDirection] = useState(0);
 
-  // Auto-play functionality
-  useEffect(() => {
-    if (images.length <= 1) return;
+  // Remove auto-play functionality - manual control only
+  // useEffect(() => {
+  //   if (images.length <= 1) return;
 
-    const timer = setInterval(() => {
-      handleNext();
-    }, autoPlayInterval);
+  //   const timer = setInterval(() => {
+  //     handleNext();
+  //   }, autoPlayInterval);
 
-    return () => clearInterval(timer);
-  }, [currentIndex, images.length, autoPlayInterval]);
+  //   return () => clearInterval(timer);
+  // }, [currentIndex, images.length, autoPlayInterval]);
 
   const handleNext = () => {
     setDirection(1);
@@ -48,6 +48,10 @@ export const ImageCarousel = ({
         alt={altText}
         sx={{
           width: '100%',
+          display: 'flex',
+          justifyContent: 'center',
+          margin: '0 auto',
+          maxWidth: '80%',
           height: '100%',
           objectFit: 'cover',
           objectPosition: 'center top',
@@ -120,20 +124,20 @@ export const ImageCarousel = ({
         }}
         sx={{
           position: 'absolute',
-          left: 8,
+          left: 4,
           top: '50%',
           transform: 'translateY(-50%)',
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          backdropFilter: 'blur(4px)',
           zIndex: 2,
+          padding: 0.5,
+          minWidth: 'auto',
+          color: 'white',
+          textShadow: '0 2px 4px rgba(0,0,0,0.5)',
           '&:hover': {
-            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
           },
-          width: 32,
-          height: 32,
         }}
       >
-        <ChevronLeftIcon />
+        <ChevronLeftIcon sx={{ fontSize: 28 }} />
       </IconButton>
 
       <IconButton
@@ -143,20 +147,20 @@ export const ImageCarousel = ({
         }}
         sx={{
           position: 'absolute',
-          right: 8,
+          right: 4,
           top: '50%',
           transform: 'translateY(-50%)',
-          backgroundColor: 'rgba(255, 255, 255, 0.8)',
-          backdropFilter: 'blur(4px)',
           zIndex: 2,
+          padding: 0.5,
+          minWidth: 'auto',
+          color: 'white',
+          textShadow: '0 2px 4px rgba(0,0,0,0.5)',
           '&:hover': {
-            backgroundColor: 'rgba(255, 255, 255, 0.95)',
+            backgroundColor: 'rgba(0, 0, 0, 0.2)',
           },
-          width: 32,
-          height: 32,
         }}
       >
-        <ChevronRightIcon />
+        <ChevronRightIcon sx={{ fontSize: 28 }} />
       </IconButton>
 
       {/* Pagination Dots */}

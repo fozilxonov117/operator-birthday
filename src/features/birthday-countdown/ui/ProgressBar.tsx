@@ -16,7 +16,7 @@ export const ProgressBar = ({ daysUntil, progress, color = '#2196f3' }: Progress
   };
 
   return (
-    <Box sx={{ width: '100%' }}>
+    <Box sx={{ width: '90%' }}>
       <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
         <Box display="flex" alignItems="center" gap={0.5}>
           {daysUntil === 0 && (
