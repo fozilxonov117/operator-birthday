@@ -6,9 +6,10 @@ export const MOCK_EMPLOYEES: Employee[] = [
   // November birthdays (including today - Nov 5)
   {
     id: '1',
-    name: 'Patrick James',
+    name: 'Patrick Jamess',
     photo: 'operators/fatxullayev.jpg',
     photos: [
+      'operators/fatxullayev.jpg',
       'operators/fatxullayev.jpg',
     ],
     birthday: '12-02',
