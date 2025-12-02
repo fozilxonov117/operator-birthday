@@ -2,7 +2,7 @@ import { Box, Typography, Card, CardContent, IconButton } from '@mui/material';
 import { motion } from 'framer-motion';
 import { useRef, useEffect } from 'react';
 import { MONTHS } from '../../shared/constants';
-import { getSeasonConfig, getCurrentSeason, isMonthInCurrentSeason, SEASON_CONFIG } from '../../shared/constants/seasons';
+import { getSeasonConfig, isMonthAccessible } from '../../shared/constants/seasons';
 import ChevronLeftIcon from '@mui/icons-material/ChevronLeft';
 import ChevronRightIcon from '@mui/icons-material/ChevronRight';
 import CakeIcon from '@mui/icons-material/Cake';
@@ -15,40 +15,48 @@ interface MonthFilterProps {
 
 export const MonthFilter = ({ selectedMonth, onMonthSelect, birthdayCounts }: MonthFilterProps) => {
   const scrollContainerRef = useRef<HTMLDivElement>(null);
-  const currentSeason = getCurrentSeason();
-  const currentSeasonMonths = SEASON_CONFIG[currentSeason].months;
+  const currentMonth = new Date().getMonth() + 1; // 1-12
+  
+  // Get accessible months (current, prev, next)
+  const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+  const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+  const accessibleMonths = [prevMonth, currentMonth, nextMonth];
 
-  // Reorder months so current season is in the CENTER of the carousel
-  // For winter (Dec=12, Jan=1, Feb=2), order becomes: Jun, Jul, Aug, Sep, Oct, Nov, Dec, Jan, Feb, Mar, Apr, May
+  // Reorder months so current month is in the CENTER of the carousel
+  // For December (current=12): Order: Sep → Oct → Nov → Dec → Jan → Feb → Mar → Apr → May → Jun → Jul → Aug
   const reorderedMonths = (() => {
     const allMonthIds = MONTHS.map(m => m.id);
     
-    // Separate current season months from others
-    const otherMonths = allMonthIds.filter(id => !currentSeasonMonths.includes(id));
+    // Find the current month index
+    const currentMonthIndex = allMonthIds.indexOf(currentMonth);
     
-    // Split other months in half to place season in the middle
-    const halfPoint = Math.floor(otherMonths.length / 2);
-    const firstHalf = otherMonths.slice(0, halfPoint);
-    const secondHalf = otherMonths.slice(halfPoint);
+    // Calculate how many months to shift to center the current month
+    const totalMonths = allMonthIds.length;
+    const centerPosition = Math.floor(totalMonths / 2);
+    const shift = currentMonthIndex - centerPosition;
     
-    // Arrange: [first half] + [current season] + [second half]
-    const reordered = [...firstHalf, ...currentSeasonMonths, ...secondHalf];
+    // Rotate the array to center the current month
+    const rotated = [];
+    for (let i = 0; i < totalMonths; i++) {
+      const newIndex = (i + shift + totalMonths) % totalMonths;
+      rotated.push(allMonthIds[newIndex]);
+    }
     
-    return MONTHS.filter(m => reordered.includes(m.id))
-      .sort((a, b) => reordered.indexOf(a.id) - reordered.indexOf(b.id));
+    return MONTHS.filter(m => rotated.includes(m.id))
+      .sort((a, b) => rotated.indexOf(a.id) - rotated.indexOf(b.id));
   })();
 
   const handleArrowClick = (direction: 'left' | 'right') => {
-    const currentIndex = currentSeasonMonths.findIndex(m => m === selectedMonth);
+    const currentIndex = accessibleMonths.findIndex(m => m === selectedMonth);
     let newIndex;
     
     if (direction === 'left') {
-      newIndex = currentIndex === 0 ? currentSeasonMonths.length - 1 : currentIndex - 1;
+      newIndex = currentIndex === 0 ? accessibleMonths.length - 1 : currentIndex - 1;
     } else {
-      newIndex = currentIndex === currentSeasonMonths.length - 1 ? 0 : currentIndex + 1;
+      newIndex = currentIndex === accessibleMonths.length - 1 ? 0 : currentIndex + 1;
     }
     
-    onMonthSelect(currentSeasonMonths[newIndex]);
+    onMonthSelect(accessibleMonths[newIndex]);
   };
 
   // Handle mouse wheel scroll with passive: false
@@ -129,21 +137,21 @@ export const MonthFilter = ({ selectedMonth, onMonthSelect, birthdayCounts }: Mo
           const isSelected = selectedMonth === month.id;
           const currentYear = new Date().getFullYear();
           const seasonConfig = getSeasonConfig(month.id);
-          const isInCurrentSeason = isMonthInCurrentSeason(month.id);
+          const isAccessible = isMonthAccessible(month.id);
 
           return (
             <motion.div
               key={month.id}
               data-month={month.id}
-              whileHover={isInCurrentSeason ? { scale: 1.05, y: -1 } : {}}
-              whileTap={isInCurrentSeason ? { scale: 1 } : {}}
+              whileHover={isAccessible ? { scale: 1.05, y: -1 } : {}}
+              whileTap={isAccessible ? { scale: 1 } : {}}
               transition={{ type: 'spring', stiffness: 300 }}
             >
               <Card
-                onClick={() => isInCurrentSeason && onMonthSelect(month.id)}
+                onClick={() => isAccessible && onMonthSelect(month.id)}
                 sx={{
                   minWidth: 200,
-                  cursor: isInCurrentSeason ? 'pointer' : 'not-allowed',
+                  cursor: isAccessible ? 'pointer' : 'not-allowed',
                   background: isSelected
                     ? seasonConfig.monthCardColors.selected
                     : seasonConfig.monthCardColors.unselected,
@@ -151,10 +159,10 @@ export const MonthFilter = ({ selectedMonth, onMonthSelect, birthdayCounts }: Mo
                   border: isSelected ? `2px solid ${seasonConfig.colors.primary}` : '2px solid rgba(255, 255, 255, 0.5)',
                   boxShadow: isSelected ? `0 8px 32px ${seasonConfig.colors.primary}40` : '0 4px 16px rgba(0, 0, 0, 0.1)',
                   transition: 'all 0.3s ease',
-                  opacity: isInCurrentSeason ? 1 : 0.4,
-                  filter: isInCurrentSeason ? 'none' : 'grayscale(50%)',
-                  pointerEvents: isInCurrentSeason ? 'auto' : 'none',
-                  '&:hover': isInCurrentSeason ? {
+                  opacity: isAccessible ? 1 : 0.4,
+                  filter: isAccessible ? 'none' : 'grayscale(50%)',
+                  pointerEvents: isAccessible ? 'auto' : 'none',
+                  '&:hover': isAccessible ? {
                     boxShadow: `0 12px 40px ${seasonConfig.colors.primary}50`,
                     border: `2px solid ${seasonConfig.colors.primary}`,
                   } : {},

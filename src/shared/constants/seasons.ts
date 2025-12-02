@@ -129,3 +129,16 @@ export const isMonthInCurrentSeason = (month: number): boolean => {
   const currentSeason = getCurrentSeason();
   return SEASON_CONFIG[currentSeason].months.includes(month);
 };
+
+/**
+ * Check if a month is the current month, previous month, or next month
+ */
+export const isMonthAccessible = (month: number): boolean => {
+  const currentMonth = new Date().getMonth() + 1; // 1-12
+  const prevMonth = currentMonth === 1 ? 12 : currentMonth - 1;
+  const nextMonth = currentMonth === 12 ? 1 : currentMonth + 1;
+  
+  return month === currentMonth || month === prevMonth || month === nextMonth;
+};
+
+

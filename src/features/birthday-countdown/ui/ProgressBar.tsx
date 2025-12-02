@@ -17,7 +17,7 @@ export const ProgressBar = ({ daysUntil, progress, color = '#2196f3' }: Progress
 
   return (
     <Box sx={{ width: '90%' }}>
-      <Box display="flex" justifyContent="space-between" alignItems="center" mb={0.5}>
+      <Box display="flex" justifyContent="flex-start" alignItems="center" mb={0.5}>
         <Box display="flex" alignItems="center" gap={0.5}>
           {daysUntil === 0 && (
             <CakeIcon sx={{ fontSize: 14, color: color }} />
@@ -33,16 +33,6 @@ export const ProgressBar = ({ daysUntil, progress, color = '#2196f3' }: Progress
             {getTimeLabel(daysUntil)}
           </Typography>
         </Box>
-        <Typography
-          variant="caption"
-          sx={{
-            fontWeight: 600,
-            color: color,
-            fontSize: '0.7rem',
-          }}
-        >
-          {Math.round(progress)}%
-        </Typography>
       </Box>
       <motion.div
         initial={{ scaleX: 0 }}
