@@ -36,7 +36,7 @@ export const MonthFilter = ({ selectedMonth, onMonthSelect, birthdayCounts }: Mo
     const shift = currentMonthIndex - centerPosition;
     
     // Rotate the array to center the current month
-    const rotated = [];
+    const rotated: number[] = [];
     for (let i = 0; i < totalMonths; i++) {
       const newIndex = (i + shift + totalMonths) % totalMonths;
       rotated.push(allMonthIds[newIndex]);
